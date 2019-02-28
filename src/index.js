@@ -11,7 +11,17 @@ import 'semantic-ui-css/semantic.min.css';
 
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
-const Root = () => (
+class Root extends React.Component {
+    componentDidMount() {
+        firebase.auth().onAuthStateChanged(user => {
+            if (user) {
+                this.props.history.push("/");
+            }
+        });
+    }
+
+render() {
+    return (
     <Router>
         <Switch>
             <Route exact path="/" component={App} />
