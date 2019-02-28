@@ -82,7 +82,7 @@ class Register extends React.Component {
             )}?d=identicon`
           })
           .then(() => {
-            this.saveUser(createUser).then(() => {
+            this.saveUser(createdUser).then(() => {
               console.log('user saved');
             })
           })
@@ -98,7 +98,7 @@ class Register extends React.Component {
   };
 
 saveUser = createdUser => {
-  return this.state.userRef.child(createUser.user.uid).set({
+  return this.state.userRef.child(createdUser.user.uid).set({
     name: createdUser.user.displayName,
     avatar: createdUser.user.photoURL
   });
