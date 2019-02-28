@@ -28,10 +28,12 @@ class Login extends React.Component {
 
   handleSubmit = event => {
     event.preventDefault();
-    if (this.isFormValid()) {
+    if (this.isFormValid(this.state)) {
       this.setState({ errors: [], loading: true });
     }
   };
+
+  isFormValid = ({email, password }) => email && password;
 
 
   handleInputError = (errors, inputName) => {
