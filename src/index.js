@@ -9,7 +9,7 @@ import firebase from './firebase';
 
 import 'semantic-ui-css/semantic.min.css';
 
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route, withRouter } from 'react-router-dom';
 
 class Root extends React.Component {
     componentDidMount() {
@@ -22,14 +22,21 @@ class Root extends React.Component {
 
 render() {
     return (
-    <Router>
         <Switch>
             <Route exact path="/" component={App} />
             <Route path="/login" component={Login} />
             <Route path="/register" component={Register} />
         </Switch>
-    </Router>
 );
+    }
+}
 
-ReactDOM.render(<Root />, document.getElementById("root"));
+const RootWithAuth = withRouter(Root);
+
+ReactDOM.render(
+<Router>
+    <RootWithAuth />
+</Router>,
+document.getElementById("root")
+);
 registerServiceWorker();
