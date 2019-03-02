@@ -1,4 +1,5 @@
 import React from 'react';
+import UserPanel from "./UserPanel";
 import { Menu } from "semantic-ui-react";
 
 class SidePanel extends React.Component {
