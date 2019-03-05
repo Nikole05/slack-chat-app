@@ -3,7 +3,7 @@ import { Menu, Icon } from "semantic-ui-react";
 
 class Channels extends React.Component {
     state = {
-        Channels: []
+        channels: []
     }
 
 
@@ -16,8 +16,8 @@ class Channels extends React.Component {
             <Menu.Item>
                 <span>
                     <Icon name="exchange" /> CHANNELS
-                </span>
-                ({ channels.length }) <Icon name="add" />
+                </span>{" "}
+                ({channels.length}) <Icon name="add" />
             </Menu.Item>
             {/* Channels */}
             </Menu.Menu>
