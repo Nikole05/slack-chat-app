@@ -15,10 +15,10 @@ class Channels extends React.Component {
     addChannel = () => {
         const { channelsRef, channelName, channelDetails, user } = this.state;
 
-        const kay = channelsRef.push().key;
+        const key = channelsRef.push().key;
 
         const newChannel = {
-            id: kay,
+            id: key,
             name: channelName,
             details: channelDetails,
             createdBy: {
