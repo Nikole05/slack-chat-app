@@ -11,7 +11,17 @@ class Messages extends React.Component {
         messagesRef: firebase.database().ref('messages'),
         channel: this.props.currentChannel,
         user: this.props.currentUser
+    };
+
+    componentDidMount() {
+        const { channel, user } = this.state;
+
+        if (channel && user) {
+            this.addListeners(channel.id);
+        }
     }
+
+    
 
     render() {
         const { messagesRef, channel, user } = this.state;
