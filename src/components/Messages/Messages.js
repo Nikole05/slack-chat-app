@@ -1,49 +1,56 @@
-import React from 'react';
+import React from "react";
 import { Segment, Comment } from "semantic-ui-react";
-import firebase from '../../firebase';
+import firebase from "../../firebase";
 
 import MessagesHeader from "./MessagesHeader";
 import MessageForm from "./MessageForm";
 
-
 class Messages extends React.Component {
-    state = {
-        messagesRef: firebase.database().ref('messages'),
-        channel: this.props.currentChannel,
-        user: this.props.currentUser
-    };
+  state = {
+    messagesRef: firebase.database().ref("messages"),
+    channel: this.props.currentChannel,
+    user: this.props.currentUser
+  };
 
-    componentDidMount() {
-        const { channel, user } = this.state;
+  componentDidMount() {
+    const { channel, user } = this.state;
 
-        if (channel && user) {
-            this.addListeners(channel.id);
-        }
+    if (channel && user) {
+      this.addListeners(channel.id);
     }
+  }
 
-    
+  addListeners = channelId => {
+    this.addMessageListener(channelId);
+  };
 
-    render() {
-        const { messagesRef, channel, user } = this.state;
+  addMessageListener = channelId => {
+    let loadedMessages = [];
+    this.state.messagesRef.child(channelId).on("child_added", snap => {
+      loadedMessages.push(snap.val());
+      console.log(loadedMessages);
+    });
+  };
 
-        return (
-            <React.Fragment>
-                <MessagesHeader />
+  render() {
+    const { messagesRef, channel, user } = this.state;
 
-                <Segment>
-                    <Comment.Group className="messages">
-                    {/* Messages */}
-                    </Comment.Group>
-                </Segment>
+    return (
+      <React.Fragment>
+        <MessagesHeader />
 
-                <MessageForm 
-                messagesRef={messagesRef}
-                currentChannel={channel}
-                currentUser={user}
-                />
-            </React.Fragment>
-        );
-    }
+        <Segment>
+          <Comment.Group className="messages">{/* Messages */}</Comment.Group>
+        </Segment>
+
+        <MessageForm
+          messagesRef={messagesRef}
+          currentChannel={channel}
+          currentUser={user}
+        />
+      </React.Fragment>
+    );
+  }
 }
 
-export default Messages ;
+export default Messages;
