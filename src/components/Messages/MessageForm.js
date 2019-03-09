@@ -4,7 +4,7 @@ import firebase from "../../firebase";
 import { Segment, Button, Input } from "semantic-ui-react";
 
 import FileModal from "./FileModal";
-import { REFUSED } from "dns";
+
 
 class MessageForm extends React.Component {
   state = {
@@ -99,7 +99,7 @@ class MessageForm extends React.Component {
         },
         () => {
           this.state.uploadTask.snapshot.ref.getDownloadURL().then(downloadUrl => {
-            this.sendFileMessage(dowloadUrl, ref, pathToUpload);
+            this.sendFileMessage(downloadUrl, ref, pathToUpload);
           })
           .catch(err => {
             console.error(err);
@@ -116,7 +116,7 @@ class MessageForm extends React.Component {
   };
 
   sendFileMessage = (fileUrl, ref, pathToUpload) => {
-    ref.child(pathTopload)
+    ref.child(pathToUpload)
     .push()
     .set(this.createMessage(fileUrl))
     .then(() => {
