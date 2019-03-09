@@ -1,8 +1,40 @@
 import React from 'react';
+import mine from 'mine-types';
 import { Modal, Input, Button, Icon } from 'semantic-ui-react';
 
 
 class FileModal extends React.Component {
+    sate = {
+        file: null,
+        authorized: ['image/jpeg', 'image/png']
+    }
+
+    addFile = event => {
+        const file = event.target.files[0];
+
+        if (file) {
+            this.setState({ file});
+        }
+    };
+
+    sendFile = () => {
+        const { file } = this.state;
+        const { uploadFile, closeModal } = this.props;
+
+        if (file !== null) {
+        if (this.isAuthorized(file.name)) {
+          const metadata = { contentType: mine.lookup(file.name) };
+          uploadFile(file, metadata);
+          closeModal();
+          this.clearFile();
+        }
+        }
+    }
+
+    isAuthorized = filename => this.state.authorized.includes(mine.lookup(filename));
+
+    clearFile = () => this.setState({ file: null });
+
     render() {
         const { modal, closeModal } = this.props;
 
@@ -11,6 +43,7 @@ class FileModal extends React.Component {
             <Modal.Header>Select an Image File</Modal.Header>
             <Modal.Content>
                 <Input 
+                onChange={this.addFile}
                 fluid
                 label="File types: jpg, png"
                 name="file"
@@ -18,8 +51,15 @@ class FileModal extends React.Component {
                 />
             </Modal.Content>
             <Modal.Actions>
-                <Button
+            <Button
+                onClick={this.sendFile}
                 color="green"
+                inverted
+                >  
+                <Icon name="checkmark" /> Send
+                </Button>
+                <Button
+                color="red"
                 inverted
                 onClick={closeModal}
                 >  
