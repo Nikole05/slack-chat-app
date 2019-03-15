@@ -37,6 +37,7 @@ class MessageForm extends React.Component {
         name: this.state.user.displayName,
         avatar: this.state.user.photoURL
       },
+      content: this.state.message
     };
     if (fileUrl !== null) {
       message['image'] = fileUrl;
@@ -84,10 +85,13 @@ class MessageForm extends React.Component {
         uploadTask: this.state.storageRef.child(filePath).put(file, metadata)
       },
       () => {
-        this.state.uploadTask.on("state_changed", snap => {
+        this.state.uploadTask.on(
+          "state_changed", 
+          snap => {
           const percentUploaded = Math.round(
             (snap.bytesTransferred / snap.totalBytes) * 100
           );
+          this.props.isProgressBarrVisible(percentUploaded)
           this.setState({ percentUploaded });
         },
         err => {
@@ -96,7 +100,7 @@ class MessageForm extends React.Component {
             errors: this.state.errors.concat(err),
             uploadState: 'error',
             uploadTask: null
-          })
+          });
         },
         () => {
           this.state.uploadTask.snapshot.ref.getDownloadURL().then(downloadUrl => {
@@ -154,7 +158,7 @@ class MessageForm extends React.Component {
         />
         <Button.Group icon widths="2">
           <Button
-            inClick={this.sendMessage}
+            onClick={this.sendMessage}
             disabled={loading}
             color="orange"
             content="Add Replay"

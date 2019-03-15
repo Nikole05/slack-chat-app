@@ -98,7 +98,7 @@ class Channels extends React.Component {
     channels.map(channel => (
       <Menu.Item
         key={channel.id}
-        inClick={() => this.changeChannel(channel)}
+        onClick={() => this.changeChannel(channel)}
         name={channel.name}
         style={{ opacity: 0.7 }}
         active={channel.id === this.state.activeChannel}
