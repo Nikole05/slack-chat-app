@@ -21,7 +21,7 @@ changeChannel = channel => {
 
 displayChannels = starredChannels =>
     starredChannels.length > 0 &&
-    starredChannels.map(starredChannels => (
+    starredChannels.map(channel => (
       <Menu.Item
         key={channel.id}
         onClick={() => this.changeChannel(channel)}

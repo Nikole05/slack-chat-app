@@ -56,7 +56,7 @@ class Channels extends React.Component {
           }
         }
     } else {
-      notifications.puch({
+      notifications.push({
         id: channelId,
         total: snap.numChildren(),
         lastKnownTotal: snap.numChildren(),
