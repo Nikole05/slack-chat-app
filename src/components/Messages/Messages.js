@@ -53,7 +53,7 @@ class Messages extends React.Component {
   };
 
   addUserStarsListener = (channelId, userId) => {
-    this.state.usersRef
+    this.state.userRef
       .child(userId)
       .child("starred")
       .once("value")
