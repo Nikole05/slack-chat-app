@@ -29,7 +29,7 @@ class Starred extends React.Component {
                     starredChannels: [...this.state.starredChannels, starredChannel]
                 });
         });
-        this.state.usersRef
+        this.state.userRef
         .child(userId)
         .child("starred")
         .on("child_removed", snap => {
