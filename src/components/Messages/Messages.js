@@ -20,7 +20,7 @@ class Messages extends React.Component {
     channel: this.props.currentChannel,
     isChannelStarred: false,
     user: this.props.currentUser,
-    userRef: firebase.database().ref("users"),
+    usersRef: firebase.database().ref("users"),
     numUniqueUsers: "",
     searchTerm: "",
     searchLoading: false,
@@ -39,6 +39,16 @@ class Messages extends React.Component {
     }
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (this.messagesEnd) {
+      this.scrollToBottom();
+    }
+  }
+
+  scrollToBottom = () => {
+    this.messagesEnd.scrollIntoView({ behavior: 'smooth' });
+  }
+
   addListeners = channelId => {
     this.addMessageListener(channelId);
     this.addTypingListeners(channelId);
@@ -51,19 +61,21 @@ class Messages extends React.Component {
       typingUsers = typingUsers.concat({
         id: snap.kay,
         name: snap.val()
-      })
+      });
       this.setState({ typingUsers });
     }
-    })
+    });
 
-    this.state.typingRef.child(channelId).on('child_removed', snap => {
-      const index = typingUsers.findIndex(user => user.i === snap.key);
+    this.state.typingRef.child(channelId).on("child_removed", snap => {
+      const index = typingUsers.findIndex(user => user.id === snap.key);
       if (index !== -1) {
         typingUsers = typingUsers.filter(user => user.id !== snap.key);
         this.setState({ typingUsers });
       }
-    })
-    this.state.connectedRef.on('value', snap => {
+    });
+
+
+    this.state.connectedRef.on("value", snap => {
       if (snap.val() === true) {
         this.state.typingRef
         .child(channelId)
@@ -73,11 +85,11 @@ class Messages extends React.Component {
           if (err !== null) {
             console.error(err);
           }
-        })
+        });
 
       }
-    })
-  }
+    });
+  };
 
   addMessageListener = channelId => {
     let loadedMessages = [];
@@ -94,7 +106,7 @@ class Messages extends React.Component {
   };
 
   addUserStarsListener = (channelId, userId) => {
-    this.state.userRef
+    this.state.usersRef
       .child(userId)
       .child("starred")
       .once("value")
@@ -123,7 +135,7 @@ class Messages extends React.Component {
 
   starChannel = () => {
     if (this.state.isChannelStarred) {
-      this.state.userRef.child(`${this.state.user.uid}/starred`).update({
+      this.state.usersRef.child(`${this.state.user.uid}/starred`).update({
         [this.state.channel.id]: {
           name: this.state.channel.name,
           details: this.state.channel.details,
@@ -134,7 +146,7 @@ class Messages extends React.Component {
         }
       });
     } else {
-      this.state.userRef
+      this.state.usersRef
         .child(`${this.state.user.uid}/starred`)
         .child(this.state.channel.id)
         .remove(err => {
@@ -246,6 +258,7 @@ class Messages extends React.Component {
               ? this.displayMessages(searchResults)
               : this.displayMessages(messages)}
             {this.displayTypingUsers(typingUsers)}
+            <div ref={node=> (this.messagesEnd = node)}></div>
           </Comment.Group>
         </Segment>
 
