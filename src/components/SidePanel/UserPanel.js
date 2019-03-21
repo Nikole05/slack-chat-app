@@ -98,7 +98,7 @@ class UserPanel extends React.Component {
     if (file) {
       reader.readAsDataURL(file);
       reader.addEventListener('load', () => {
-        this.setState({ previewImage:render.result });
+        this.setState({ previewImage:reader.result });
       });
     }
   };
