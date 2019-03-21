@@ -27,7 +27,8 @@ class Messages extends React.Component {
     searchResults: [],
     typingRef: firebase.database().ref('typing'),
     typingUsers: [],
-    connectedRef: firebase.database().ref('.info/connected')
+    connectedRef: firebase.database().ref('.info/connected'),
+    listeners: []
   };
 
   componentDidMount() {
@@ -289,7 +290,7 @@ class Messages extends React.Component {
 
         <Segment>
           <Comment.Group className="messages">
-          {this.displayMessageSkeleton(messagesLoading)}
+          {this.displayMessagesSkeleton(messagesLoading)}
             {searchTerm
               ? this.displayMessages(searchResults)
               : this.displayMessages(messages)}
